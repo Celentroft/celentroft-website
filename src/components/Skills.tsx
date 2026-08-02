@@ -25,7 +25,12 @@ import {
   SiDeno,
   SiBun,
   SiZig,
-  SiLinux
+  SiLinux,
+  SiVscodium,
+  SiNginx,
+  SiCloudflare,
+  SiOllama,
+
 } from "react-icons/si";
 import SectionBackground from "./SectionBackground";
 import SectionHeader from "./SectionHeader";
@@ -84,6 +89,10 @@ const skillCategories: SkillCategory[] = [
       { name: "Git", icon: SiGit, color: "#F05032" },
       { name: "Bun", icon: SiBun, color: "#FBF0DF" },
       { name: "Linux", icon: SiLinux, color: "#000000" },
+      { name: "Vscodium", icon: SiVscodium, color: "#3776AB" },
+      { name: "Nginx", icon: SiNginx, color: "#009639" },
+      { name: "Cloudflare", icon: SiCloudflare, color: "#F48120" },
+      { name: "Ollama", icon: SiOllama, color: "#FFFFFF" },
     ],
   },
 ];
