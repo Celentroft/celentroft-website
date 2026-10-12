@@ -1,110 +1,90 @@
-"use client";
+import { FiArrowRight, FiGithub, FiStar } from "react-icons/fi";
+import { profile, githubUrl } from "@/lib/config";
+import type { GithubData } from "@/lib/github";
+import Reveal from "./Reveal";
+import Terminal from "./Terminal";
 
-import Image from "next/image";
-import { motion, type Variants } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
-import FloatingBackground from "./FloatingBackground";
-import LinksTree from "./LinksTree";
-import ScrollIndicator from "./ScrollIndicator";
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
-
-export default function Hero() {
+export default function Hero({ github }: { github: GithubData }) {
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden bg-[#09090B]">
-      <FloatingBackground />
-      <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-700/10 blur-[180px]" />
+    <section className="relative flex min-h-screen items-center overflow-hidden">
+      <div className="bg-grid absolute inset-0" aria-hidden />
+      <div
+        className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-violet-700/20 blur-[160px]"
+        aria-hidden
+      />
 
-      <div className="relative z-10 mx-auto flex max-w-7xl items-center justify-between gap-20 px-8">
-        <motion.div
-          initial="hidden"
-          animate="show"
-          transition={{ staggerChildren: 0.12 }}
-          className="max-w-xl"
-        >
-          <motion.div
-            variants={fadeUp}
-            className="mb-5 inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-1 text-sm text-violet-300"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            Software Developer
-          </motion.div>
+      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-6 pb-16 pt-28 lg:grid-cols-[1.1fr_1fr]">
+        <div>
+          <Reveal>
+            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3.5 py-1 font-mono text-xs text-violet-300">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-violet-400" />
+              </span>
+              Open to opportunities
+            </p>
+          </Reveal>
 
-          <motion.h1
-            variants={fadeUp}
-            className="text-6xl font-bold tracking-tight text-white"
-          >
-            Celentroft
-          </motion.h1>
+          <Reveal delay={0.08}>
+            <h1 className="text-5xl font-semibold tracking-tight text-white sm:text-6xl">
+              {profile.name}
+              <span className="text-violet-500">.</span>
+            </h1>
+          </Reveal>
 
-          <motion.p
-            variants={fadeUp}
-            className="mb-8 mt-6 text-lg leading-8 text-zinc-400"
-          >
-            I&apos;m a passionate Software Developer with experience across multiple
-            programming languages, including Python, Java, JavaScript, Rust, and Go.
-            I enjoy designing and building modern, scalable, and high-performance
-            applications that solve real-world problems.
-          </motion.p>
+          <Reveal delay={0.16}>
+            <p className="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">
+              {profile.role} building Discord bots, automations and web
+              applications that hold up in production — from community-scale
+              tooling to clean, fast interfaces.
+            </p>
+          </Reveal>
 
-          <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4">
+          <Reveal delay={0.24} className="mt-9 flex flex-wrap items-center gap-3">
             <a
               href="#projects"
-              className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 px-8 py-3.5 text-sm font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,.4)] transition-all duration-300 hover:shadow-[0_0_45px_rgba(139,92,246,.6)] hover:brightness-110 active:scale-[0.98]"
+              className="group inline-flex items-center gap-2 rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-violet-500"
             >
-              See Projects
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              View projects
+              <FiArrowRight className="transition-transform group-hover:translate-x-0.5" />
             </a>
-          </motion.div>
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/60 px-5 py-2.5 text-sm font-medium text-zinc-200 transition-colors hover:border-violet-400/40 hover:text-white"
+            >
+              <FiGithub />
+              GitHub
+            </a>
+          </Reveal>
 
-          <motion.div variants={fadeUp} className="mt-10 flex gap-6">
-            <LinksTree />
-          </motion.div>
-        </motion.div>
+          <Reveal delay={0.32} className="mt-10 flex gap-8 text-sm">
+            <div>
+              <p className="flex items-center gap-1.5 text-2xl font-semibold text-white">
+                {github.totalStars}
+                <FiStar className="text-base text-violet-400" />
+              </p>
+              <p className="text-muted-foreground">GitHub stars</p>
+            </div>
+            <div>
+              <p className="text-2xl font-semibold text-white">
+                {github.publicRepos}
+              </p>
+              <p className="text-muted-foreground">Repositories</p>
+            </div>
+            <div>
+              <p className="text-2xl font-semibold text-white">
+                {github.followers}
+              </p>
+              <p className="text-muted-foreground">Followers</p>
+            </div>
+          </Reveal>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="relative hidden md:block"
-        >
-          <div className="absolute -inset-6 rounded-[2.5rem] bg-violet-600/20 blur-3xl" />
-
-          <motion.div
-            animate={{ y: [0, -12, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            className="relative rounded-[2rem] bg-gradient-to-br from-violet-500/50 via-fuchsia-500/30 to-purple-500/50 p-[1.5px]"
-          >
-            <Image
-              src="/lucy.gif"
-              alt="Nathan"
-              width={300}
-              height={300}
-              priority
-              className="relative aspect-square rounded-[calc(2rem-1.5px)] object-cover"
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-            className="absolute -bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/10 bg-[#09090B]/90 px-4 py-2 text-xs font-medium text-zinc-300 backdrop-blur-md"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-            </span>
-            Available for work
-          </motion.div>
-        </motion.div>
-      </div>
-
-      <div className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2">
-        <ScrollIndicator />
+        <Reveal delay={0.2} className="flex justify-center lg:justify-end">
+          <Terminal repoCount={github.publicRepos} />
+        </Reveal>
       </div>
     </section>
   );
