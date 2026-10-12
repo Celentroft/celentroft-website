@@ -3,6 +3,7 @@ import { profile } from "./config";
 export interface DiscordGuild {
   name: string;
   icon: string | null;
+  banner: string | null;
   id: string;
   online: number;
   members: number;
@@ -19,7 +20,12 @@ export async function getDiscordGuild(): Promise<DiscordGuild | null> {
     );
     if (!res.ok) return null;
     const d = (await res.json()) as {
-      guild?: { id: string; name: string; icon: string | null };
+      guild?: {
+        id: string;
+        name: string;
+        icon: string | null;
+        banner?: string | null;
+      };
       approximate_presence_count?: number;
       approximate_member_count?: number;
     };
@@ -29,6 +35,9 @@ export async function getDiscordGuild(): Promise<DiscordGuild | null> {
       name: d.guild.name,
       icon: d.guild.icon
         ? `https://cdn.discordapp.com/icons/${d.guild.id}/${d.guild.icon}.png?size=128`
+        : null,
+      banner: d.guild.banner
+        ? `https://cdn.discordapp.com/banners/${d.guild.id}/${d.guild.banner}.png?size=1024`
         : null,
       online: d.approximate_presence_count ?? 0,
       members: d.approximate_member_count ?? 0,

@@ -3,6 +3,7 @@ export const profile = {
   realName: "Nathan",
   role: "Software Developer",
   location: "Nancy, France",
+  timezone: "Europe/Paris",
   github: "Celentroft",
   email: "scarlxrd_1337@proton.me",
   discordUser: "celentroft",

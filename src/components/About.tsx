@@ -39,26 +39,23 @@ export default function About() {
   return (
     <section id="about" className="mx-auto max-w-6xl scroll-mt-16 px-6 py-24">
       <Reveal>
-        <p className="font-mono text-xs uppercase tracking-widest text-violet-400">
-          01 — About
-        </p>
+        <p className="font-mono text-xs uppercase tracking-widest text-violet-400">01 — About</p>
         <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
-          Building things that last.
+          Building Things That Last
         </h2>
       </Reveal>
 
       <div className="mt-10 grid gap-12 lg:grid-cols-2">
         <Reveal className="space-y-4 leading-relaxed text-muted-foreground">
           <p>
-            I&apos;m {profile.realName}, a software developer based in{" "}
-            {profile.location}. I work across Python, TypeScript, Rust and Go,
-            with a focus on reliable, well-structured software.
+            I&rsquo;m {profile.realName}, a software developer based in {profile.location}. I
+            work across Python, TypeScript, Rust and Go, with a focus on reliable,
+            well-structured software.
           </p>
           <p>
-            Most of my recent work is Discord tooling — moderation, ticketing and
-            automation systems used by large communities — which taught me a lot
-            about performance, security and shipping things people actually
-            depend on.
+            Most of my recent work is Discord tooling — moderation, ticketing and automation
+            systems used by large communities — which taught me a lot about performance, security
+            and shipping things people actually depend on.
           </p>
         </Reveal>
 
@@ -67,9 +64,10 @@ export default function About() {
             {stack.map(({ name, icon: Icon }) => (
               <li
                 key={name}
+                translate="no"
                 className="flex items-center gap-2 rounded-lg border border-border bg-card/60 px-3 py-2 text-sm text-zinc-300 transition-colors hover:border-violet-400/40 hover:text-white"
               >
-                <Icon className="text-violet-400" />
+                <Icon aria-hidden="true" className="text-violet-400" />
                 {name}
               </li>
             ))}

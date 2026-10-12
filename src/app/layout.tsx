@@ -1,5 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Effects from "@/components/Effects";
+import Providers from "@/components/Providers";
+import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,13 +15,21 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#06030d",
+  colorScheme: "dark",
+};
+
+const description =
+  "Portfolio of Celentroft (Nathan) — a software developer building Discord bots, automations, and modern web applications with Python, TypeScript, Rust, and Go.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Celentroft — Software Developer",
     template: "%s | Celentroft",
   },
-  description:
-    "Portfolio of Celentroft (Nathan) — a software developer building Discord bots, automations, and modern web applications with Python, JavaScript, Rust, and Go.",
+  description,
   keywords: [
     "Celentroft",
     "Nathan",
@@ -31,10 +42,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Nathan (Celentroft)" }],
   creator: "Celentroft",
+  alternates: { canonical: "/" },
   openGraph: {
     title: "Celentroft — Software Developer",
-    description:
-      "Modern, scalable, and high-performance applications across Python, JavaScript, Rust, and Go.",
+    description,
+    url: "/",
     type: "website",
     locale: "en_US",
     siteName: "Celentroft",
@@ -42,8 +54,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Celentroft — Software Developer",
-    description:
-      "Modern, scalable, and high-performance applications across Python, JavaScript, Rust, and Go.",
+    description,
   },
   robots: {
     index: true,
@@ -62,7 +73,16 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full bg-background antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {children}
+        <a
+          href="#main"
+          className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-[100] focus-visible:rounded-lg focus-visible:bg-violet-600 focus-visible:px-4 focus-visible:py-2 focus-visible:text-sm focus-visible:font-medium focus-visible:text-white"
+        >
+          Skip to Content
+        </a>
+        <Providers>
+          {children}
+          <Effects />
+        </Providers>
       </body>
     </html>
   );

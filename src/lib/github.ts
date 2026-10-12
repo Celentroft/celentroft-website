@@ -11,11 +11,19 @@ export interface Repo {
   pushedAt: string;
 }
 
+export interface LanguageShare {
+  name: string;
+  count: number;
+  percent: number;
+}
+
 export interface GithubData {
   repos: Repo[];
   totalStars: number;
   followers: number;
   publicRepos: number;
+  languages: LanguageShare[];
+  lastPush: { repo: string; url: string; at: string } | null;
 }
 
 interface ApiRepo {
@@ -40,8 +48,32 @@ const headers: HeadersInit = {
 
 const opts = { headers, next: { revalidate: 3600 } };
 
+const EMPTY: GithubData = {
+  repos: [],
+  totalStars: 0,
+  followers: 0,
+  publicRepos: 0,
+  languages: [],
+  lastPush: null,
+};
+
+function languageShares(repos: Repo[]): LanguageShare[] {
+  const counts = new Map<string, number>();
+  for (const { language } of repos) {
+    if (language) counts.set(language, (counts.get(language) ?? 0) + 1);
+  }
+  const total = [...counts.values()].reduce((n, c) => n + c, 0);
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([name, count]) => ({
+      name,
+      count,
+      percent: Math.round((count / total) * 100),
+    }));
+}
+
 export async function getGithubData(): Promise<GithubData> {
-  const empty: GithubData = { repos: [], totalStars: 0, followers: 0, publicRepos: 0 };
   try {
     const [reposRes, userRes] = await Promise.all([
       fetch(
@@ -50,15 +82,16 @@ export async function getGithubData(): Promise<GithubData> {
       ),
       fetch(`https://api.github.com/users/${profile.github}`, opts),
     ]);
-    if (!reposRes.ok) return empty;
+    if (!reposRes.ok) return EMPTY;
 
     const raw = (await reposRes.json()) as ApiRepo[];
     const user = userRes.ok
       ? ((await userRes.json()) as { followers: number; public_repos: number })
       : { followers: 0, public_repos: raw.length };
 
-    const repos = raw
-      .filter((r) => !r.fork && !r.archived && r.name !== profile.github)
+    const own = raw.filter((r) => !r.fork && !r.archived);
+    const repos = own
+      .filter((r) => r.name !== profile.github)
       .map<Repo>((r) => ({
         name: r.name,
         description: r.description,
@@ -71,13 +104,20 @@ export async function getGithubData(): Promise<GithubData> {
       }))
       .sort((a, b) => b.stars - a.stars || +new Date(b.pushedAt) - +new Date(a.pushedAt));
 
+    // The API already returns repositories sorted by last push (desc).
+    const latest = own[0];
+
     return {
       repos,
       totalStars: repos.reduce((n, r) => n + r.stars, 0),
       followers: user.followers,
       publicRepos: user.public_repos,
+      languages: languageShares(repos),
+      lastPush: latest
+        ? { repo: latest.name, url: latest.html_url, at: latest.pushed_at }
+        : null,
     };
   } catch {
-    return empty;
+    return EMPTY;
   }
 }

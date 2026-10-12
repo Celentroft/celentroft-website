@@ -62,15 +62,41 @@
   html {
     @apply font-sans;
     scroll-behavior: smooth;
+    /* keeps the layout still when the palette locks the page scroll */
+    scrollbar-gutter: stable;
+    -webkit-tap-highlight-color: rgb(139 92 246 / 18%);
   }
   body {
     @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  a,
+  button,
+  input,
+  summary,
+  [role="option"] {
+    touch-action: manipulation;
+  }
+  /* One consistent, visible keyboard focus ring */
+  :where(a, button, summary, [role="option"]):focus-visible {
+    outline: 2px solid #a78bfa;
+    outline-offset: 3px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .caret::after {
+    animation: none;
   }
 }
 
@@ -81,6 +107,21 @@
     linear-gradient(to bottom, rgb(139 92 246 / 7%) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+}
+
+/* Brighter copy of the grid revealed around the cursor (see HeroGrid) */
+.bg-grid-hot {
+  background-image:
+    linear-gradient(to right, rgb(167 139 250 / 42%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(167 139 250 / 42%) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(
+    260px circle at var(--hx, 50%) var(--hy, 50%),
+    #000,
+    transparent 70%
+  );
+  opacity: var(--ho, 0);
+  transition: opacity 0.4s ease;
 }
 
 .caret::after {
@@ -98,6 +139,17 @@
   50% {
     opacity: 0;
   }
+}
+
+/* Film grain: kills gradient banding on the deep blacks */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 ::-webkit-scrollbar {
