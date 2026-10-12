@@ -9,7 +9,7 @@ export const profile = {
   discordUserUrl: "https://discord.com/users/1427003899939913809",
   // Code d'invitation permanent de ton serveur (discord.gg/<CODE>).
   // Vide = la section "Community" est masquée.
-  discordInvite: "https://discord.gg/thcfr",
+  discordInvite: "thcfr",
 } as const;
 
 export const githubUrl = `https://github.com/${profile.github}`;
