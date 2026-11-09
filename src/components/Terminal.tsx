@@ -268,7 +268,11 @@ export default function Terminal({ repos, stats, profile, githubUrl, discordUrl 
   const go = useCallback((id: string) => {
     const behavior: ScrollBehavior = prefersReducedMotion() ? "auto" : "smooth";
     if (id === "top") window.scrollTo({ top: 0, behavior });
-    else document.getElementById(id)?.scrollIntoView({ behavior });
+    else {
+      // In the pinned stage the section is a screen, not a scroll position: let the stage handle it.
+      const handled = !window.dispatchEvent(new CustomEvent("stage:goto", { detail: id, cancelable: true }));
+      if (!handled) document.getElementById(id)?.scrollIntoView({ behavior });
+    }
   }, []);
 
   const findRepo = useCallback(

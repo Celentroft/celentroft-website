@@ -29,7 +29,7 @@ export default function SpotlightCard({
     el.style.setProperty("--my", `${e.clientY - rect.top}px`);
   };
 
-  const cls = `group relative block overflow-hidden rounded-2xl border border-border bg-card/70 transition-colors duration-300 hover:border-violet-400/40 ${className}`;
+  const cls = `group relative block overflow-hidden rounded-2xl border border-border bg-[#0b0614]/85 backdrop-blur-md transition-colors duration-300 hover:border-violet-400/40 ${className}`;
   const glow = (
     <span
       aria-hidden="true"

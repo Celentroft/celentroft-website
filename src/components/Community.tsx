@@ -3,6 +3,7 @@ import { preconnect } from "react-dom";
 import { FaDiscord } from "react-icons/fa6";
 import { formatNumber } from "@/lib/format";
 import type { DiscordGuild } from "@/lib/discord";
+import { T } from "./Lang";
 import Reveal from "./Reveal";
 
 export default function Community({ guild }: { guild: DiscordGuild | null }) {
@@ -10,9 +11,9 @@ export default function Community({ guild }: { guild: DiscordGuild | null }) {
   preconnect("https://cdn.discordapp.com");
 
   return (
-    <section aria-labelledby="community-title" className="mx-auto max-w-6xl px-6 py-12">
-      <Reveal>
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-card/70 p-8 sm:p-10">
+    <section id="community" aria-labelledby="community-title" className="mx-auto max-w-6xl px-6 py-12">
+      <Reveal layer={2}>
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-[#0b0614]/85 p-8 sm:p-10">
           {guild.banner && (
             <div
               aria-hidden="true"
@@ -49,7 +50,7 @@ export default function Community({ guild }: { guild: DiscordGuild | null }) {
               )}
               <div className="min-w-0">
                 <p className="font-mono text-xs uppercase tracking-widest text-violet-400">
-                  Community
+                  <T k="community.label" />
                 </p>
                 <h2
                   id="community-title"
@@ -61,10 +62,11 @@ export default function Community({ guild }: { guild: DiscordGuild | null }) {
                 <p className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1.5">
                     <span aria-hidden="true" className="h-2 w-2 rounded-full bg-emerald-400" />
-                    <span className="tabular-nums">{formatNumber(guild.online)}</span> online
+                    <span className="tabular-nums">{formatNumber(guild.online)}</span> <T k="community.online" />
                   </span>
                   <span>
-                    <span className="tabular-nums">{formatNumber(guild.members)}</span> members
+                    <span className="tabular-nums">{formatNumber(guild.members)}</span>{" "}
+                    <T k="community.members" />
                   </span>
                 </p>
               </div>
@@ -77,7 +79,7 @@ export default function Community({ guild }: { guild: DiscordGuild | null }) {
               className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-violet-500"
             >
               <FaDiscord aria-hidden="true" />
-              Join the Server
+              <T k="community.join" />
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
           </div>

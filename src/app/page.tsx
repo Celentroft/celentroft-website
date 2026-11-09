@@ -5,6 +5,11 @@ import Projects from "@/components/Projects";
 import Community from "@/components/Community";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import Stage, { type PanelDef } from "@/components/Stage";
+import Cursor from "@/components/Cursor";
+import Loader from "@/components/Loader";
+import SceneLoader from "@/components/SceneLoader";
+import TerminalSection from "@/components/TerminalSection";
 import CommandPalette, { type PaletteItem } from "@/components/CommandPalette";
 import ConsoleGreeting from "@/components/ConsoleGreeting";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -61,6 +66,16 @@ export default async function Home() {
     { id: "matrix", group: "Fun", label: "Enter the Matrix", hint: "wake up…", fx: "matrix" },
   ];
 
+  // One panel per screen of the pinned film (and per block of the phone layout).
+  const panels: PanelDef[] = [
+    { id: "top", label: "Home", node: <Hero github={github} discordUrl={guild?.url} /> },
+    { id: "about", label: "About", node: <About /> },
+    { id: "terminal", label: "Terminal", node: <TerminalSection github={github} discordUrl={guild?.url} /> },
+    { id: "projects", label: "Projects", node: <Projects repos={github.repos} languages={github.languages} /> },
+    ...(guild ? [{ id: "community", label: "Community", node: <Community guild={guild} /> }] : []),
+    { id: "contact", label: "Contact", node: <Contact /> },
+  ];
+
   // Structured data for search engines. "<" is escaped to keep the payload inert in HTML.
   const jsonLd = {
     "@context": "https://schema.org",
@@ -80,14 +95,13 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
+      <Loader />
+      <Cursor />
+      <SceneLoader />
       <ScrollProgress />
       <Navbar />
-      <main id="main">
-        <Hero github={github} discordUrl={guild?.url} />
-        <About />
-        <Projects repos={github.repos} languages={github.languages} />
-        <Community guild={guild} />
-        <Contact />
+      <main id="main" className="relative z-10 overflow-x-clip">
+        <Stage panels={panels} />
       </main>
       <Footer />
       <CommandPalette items={items} />

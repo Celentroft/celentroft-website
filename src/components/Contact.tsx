@@ -2,6 +2,8 @@ import { FiGithub, FiMail, FiMapPin } from "react-icons/fi";
 import { FaDiscord } from "react-icons/fa6";
 import { profile, githubUrl } from "@/lib/config";
 import CopyButton from "./CopyButton";
+import GhostNumber from "./GhostNumber";
+import { SplitT, T } from "./Lang";
 import LocalTime from "./LocalTime";
 import Reveal from "./Reveal";
 import SpotlightCard from "./SpotlightCard";
@@ -23,20 +25,23 @@ function Label({ children }: { children: React.ReactNode }) {
 
 export default function Contact() {
   return (
-    <section id="contact" className="mx-auto max-w-6xl scroll-mt-16 px-6 py-24">
-      <Reveal>
-        <p className="font-mono text-xs uppercase tracking-widest text-violet-400">03 — Contact</p>
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
-          Let&rsquo;s Work Together
+    <section id="contact" className="relative mx-auto max-w-6xl scroll-mt-16 px-6 py-24">
+      <GhostNumber n="04" />
+      <Reveal layer={1}>
+        <p className="font-mono text-xs uppercase tracking-widest text-violet-400">
+          <T k="contact.label" />
+        </p>
+        <h2 className="mt-3 text-4xl font-semibold tracking-tight text-white md:text-5xl">
+          <SplitT k="contact.title" />
         </h2>
-        <p className="mt-3 max-w-xl text-muted-foreground">
-          Have a project in mind or want to talk? My inbox is open.
+        <p className="mt-3 max-w-xl text-zinc-300">
+          <T k="contact.lead" />
         </p>
       </Reveal>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
         {/* Email: the whole card is a mailto link (stretched), with a separate copy button. */}
-        <Reveal>
+        <Reveal layer={2}>
           <SpotlightCard>
             <div className="flex items-center gap-4 p-5">
               <IconBadge>
@@ -57,7 +62,7 @@ export default function Contact() {
           </SpotlightCard>
         </Reveal>
 
-        <Reveal delay={0.05}>
+        <Reveal delay={0.05} layer={2}>
           <SpotlightCard as="a" href={githubUrl}>
             <div className="flex items-center gap-4 p-5">
               <IconBadge>
@@ -73,7 +78,7 @@ export default function Contact() {
           </SpotlightCard>
         </Reveal>
 
-        <Reveal delay={0.1}>
+        <Reveal delay={0.1} layer={3}>
           <SpotlightCard as="a" href={profile.discordUserUrl}>
             <div className="flex items-center gap-4 p-5">
               <IconBadge>
@@ -89,14 +94,16 @@ export default function Contact() {
           </SpotlightCard>
         </Reveal>
 
-        <Reveal delay={0.15}>
+        <Reveal delay={0.15} layer={3}>
           <SpotlightCard>
             <div className="flex items-center gap-4 p-5">
               <IconBadge>
                 <FiMapPin />
               </IconBadge>
               <div className="min-w-0">
-                <Label>Location</Label>
+                <Label>
+                  <T k="contact.location" />
+                </Label>
                 <p className="text-sm font-medium text-zinc-100">{profile.location}</p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
                   <LocalTime timeZone={profile.timezone} />
